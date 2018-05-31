@@ -13,6 +13,8 @@ import { ContactPage } from '../pages/contact/contact';
 import { StartPage } from '../pages/startPage/startPage';
 import { TabsPage } from '../pages/tabs/tabs';
 
+import {Firebase} from "@ionic-native/firebase";
+
 @NgModule({
   declarations: [
     MyApp,
@@ -40,6 +42,7 @@ import { TabsPage } from '../pages/tabs/tabs';
   providers: [
     StatusBar,
     SplashScreen,
+    Firebase,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

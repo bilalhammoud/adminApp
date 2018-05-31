@@ -5,11 +5,16 @@
 
   <ion-list>
     <ion-item>
-      <ion-input placeholder="Email" [(ngModel)]="Email">
+      <ion-input placeholder="Email"
+                 [(ngModel)]="email"
+                 required="required">
       </ion-input>
     </ion-item>
     <ion-item>
-      <ion-input placeholder="Password" type="password" [(ngModel)]="password">
+      <ion-input placeholder="Password"
+                 type="password"
+                 [(ngModel)]="password"
+                 required="required">
       </ion-input>
     </ion-item>
   </ion-list>

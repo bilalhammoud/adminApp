@@ -12,15 +12,23 @@
 
   <ion-list>
     <ion-item>
-      <ion-input placeholder="Email" [(ngModel)]="email">
+      <ion-input placeholder="Email"
+                 [(ngModel)]="email"
+                 required="required">
       </ion-input>
     </ion-item>
     <ion-item>
-      <ion-input placeholder="Password" type="password" [(ngModel)]="password">
+      <ion-input placeholder="Password"
+                 type="password"
+                 [(ngModel)]="password"
+                 required="required">
       </ion-input>
     </ion-item>
     <ion-item>
-      <ion-input placeholder="Repeat Password" type="password" [(ngModel)]="repeatPassword">
+      <ion-input placeholder="Repeat Password"
+                 type="password"
+                 [(ngModel)]="repeatPassword"
+                 required="required">
       </ion-input>
     </ion-item>
   </ion-list>
