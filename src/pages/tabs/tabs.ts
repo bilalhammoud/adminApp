@@ -62,13 +62,45 @@ export class TabsPage {
             }
           },
           {
-            text: 'Contact us',
+            text: 'Resend the email verification',
             role: 'contact',
             handler: () => {
+              this.sendEmailVerification();
             }
           }
         ]
       }).present();
     }
+  }
+
+  sendEmailVerification(){
+    this.afAuth.authState.subscribe(user => {
+      user.sendEmailVerification()
+        .then(() => {
+          this.alertCtrl.create({
+            title: 'Done',
+            subTitle: 'Email verification sent.',
+            enableBackdropDismiss: false,
+            buttons: [
+              {
+                text: 'I verified it',
+                role: 'refresh',
+                handler: () => {
+                  this.user.reload();
+                  this.user.getIdToken(true);
+                  this.checkVerifiedEmail();
+                }
+              },
+              {
+                text: 'Close',
+                role: 'cancel',
+                handler: () => {
+                  this.navCtrl.setRoot(HomePage);
+                }
+              }
+            ]
+          }).present();
+        })
+    });
   }
 }
