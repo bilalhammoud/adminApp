@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, LoadingController, ToastController} from 'ionic-angular';
+import {NavController, LoadingController, ToastController, AlertController} from 'ionic-angular';
 import {RegisterPage} from "../register/register";
 import {TabsPage} from "../tabs/tabs";
 import {User} from "../../models/user";
@@ -18,6 +18,7 @@ export class HomePage {
   constructor(private afAuth: AngularFireAuth,
               public navCtrl: NavController,
               public loadingCtrl: LoadingController,
+              public alertCtrl: AlertController,
               public toastCtrl: ToastController) {
 
   }
@@ -65,4 +66,52 @@ export class HomePage {
   goRegister() {
     this.navCtrl.push(RegisterPage);
   }
+
+  resetPassword() {
+    this.alertCtrl.create({
+      title: 'Reset Password',
+      inputs: [
+        {
+          name: 'email',
+          type: 'email',
+          placeholder: 'Email'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+          }
+        },
+        {
+          text: 'Send',
+          handler: data => {
+            this.sendPassword(data.email);
+          }
+        }
+      ]
+    }).present();
+  }
+
+  sendPassword(email) {
+    //todo adding a condition to check if the email is not empty.
+
+    this.afAuth.auth.sendPasswordResetEmail(email)
+      .then(() => {
+        this.alertCtrl.create({
+          title: 'Done',
+          subTitle: 'We sent you an email to reset your password.',
+          enableBackdropDismiss: false,
+          buttons: [
+            {
+              text: 'Ok',
+              role: 'cancel',
+              handler: () => {
+              }
+            }
+          ]
+        }).present();
+      })
+  };
 }

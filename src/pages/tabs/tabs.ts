@@ -53,19 +53,19 @@ export class TabsPage {
         enableBackdropDismiss: false,
         buttons: [
           {
+            text: 'Resend the email verification',
+            role: 'Resend',
+            handler: () => {
+              this.sendEmailVerification();
+            }
+          },
+          {
             text: 'I verified it',
             role: 'refresh',
             handler: () => {
               this.user.reload();
               this.user.getIdToken(true);
               this.checkVerifiedEmail();
-            }
-          },
-          {
-            text: 'Resend the email verification',
-            role: 'contact',
-            handler: () => {
-              this.sendEmailVerification();
             }
           }
         ]
@@ -83,19 +83,19 @@ export class TabsPage {
             enableBackdropDismiss: false,
             buttons: [
               {
+                text: 'Close',
+                role: 'cancel',
+                handler: () => {
+                  this.navCtrl.setRoot(HomePage);
+                }
+              },
+              {
                 text: 'I verified it',
                 role: 'refresh',
                 handler: () => {
                   this.user.reload();
                   this.user.getIdToken(true);
                   this.checkVerifiedEmail();
-                }
-              },
-              {
-                text: 'Close',
-                role: 'cancel',
-                handler: () => {
-                  this.navCtrl.setRoot(HomePage);
                 }
               }
             ]
