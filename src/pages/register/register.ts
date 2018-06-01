@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {User} from "../../models/user";
+
+import {AngularFireAuth} from 'angularfire2/auth';
+import {TabsPage} from "../tabs/tabs";
 
 @IonicPage()
 @Component({
@@ -8,19 +12,62 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class RegisterPage {
 
-  email:string = '';
-  password:string = '';
-  repeatPassword:string = '';
+  repeatPassword: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  user = {} as User;
+
+  constructor(private afAuth: AngularFireAuth, public navCtrl: NavController, public navParams: NavParams,
+              public loadingCtrl: LoadingController,
+              public toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
   }
 
-  register() {
-    if (0 === this.email.length || 0 === this.password.length || 0 === this.repeatPassword.length){
+  async register(user: User) {
 
+    if (!user.email || !user.password || !this.repeatPassword) {
+      this.toastCtrl.create({
+        message: 'Please fill all Fields!',
+        duration: 4000,
+        position: 'top'
+      }).present();
+    } else if (user.password != this.repeatPassword) {
+      this.repeatPassword = '';
+      this.toastCtrl.create({
+        message: 'Re-Password should match your Password!',
+        duration: 4000,
+        position: 'top'
+      }).present();
+    } else {
+
+      var loader = this.loadingCtrl.create({
+        content: "Please wait..."
+      });
+      loader.present();
+
+      try {
+        const result = await this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password).then(authData => {
+          //successful
+          loader.dismiss();
+          this.navCtrl.setRoot(TabsPage);
+
+        }, error => {
+          loader.dismiss();
+          // Unable to log in
+          let toast = this.toastCtrl.create({
+            message: error,
+            duration: 4000,
+            position: 'top'
+          });
+          toast.present();
+
+          this.user.password = ""//empty the password field
+        });
+      }
+      catch (e) {
+        console.log(e);
+      }
     }
   }
 }

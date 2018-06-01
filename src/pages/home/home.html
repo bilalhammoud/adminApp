@@ -6,19 +6,19 @@
   <ion-list>
     <ion-item>
       <ion-input placeholder="Email"
-                 [(ngModel)]="email"
+                 [(ngModel)]="user.email"
                  required="required">
       </ion-input>
     </ion-item>
     <ion-item>
       <ion-input placeholder="Password"
                  type="password"
-                 [(ngModel)]="password"
+                 [(ngModel)]="user.password"
                  required="required">
       </ion-input>
     </ion-item>
   </ion-list>
 
-  <button ion-button full (click)="login()">Log in</button>
+  <button ion-button full (click)="login(user)">Log in</button>
   <button ion-button full color="light" (click)="goRegister()">Register</button>
 </ion-content>

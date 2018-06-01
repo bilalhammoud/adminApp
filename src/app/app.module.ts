@@ -11,9 +11,13 @@ import {RegisterPage} from "../pages/register/register";
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { StartPage } from '../pages/startPage/startPage';
-import { TabsPage } from '../pages/tabs/tabs';
+import {TabsPage} from "../pages/tabs/tabs";
 
-import {Firebase} from "@ionic-native/firebase";
+import {AngularFireModule} from "angularfire2";
+import {AngularFireAuthModule} from "angularfire2/auth";
+
+import {FIREBASE_CONFIG} from "./app.firebase.config";
+
 
 @NgModule({
   declarations: [
@@ -27,7 +31,9 @@ import {Firebase} from "@ionic-native/firebase";
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(FIREBASE_CONFIG),
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -42,7 +48,6 @@ import {Firebase} from "@ionic-native/firebase";
   providers: [
     StatusBar,
     SplashScreen,
-    Firebase,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

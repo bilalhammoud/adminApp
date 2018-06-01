@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 import {NavController, LoadingController, ToastController} from 'ionic-angular';
 import {RegisterPage} from "../register/register";
 import {TabsPage} from "../tabs/tabs";
+import {User} from "../../models/user";
+import {AngularFireAuth} from "angularfire2/auth";
+
 //import {Firebase} from "@ionic-native/firebase";
 
 @Component({
@@ -10,45 +13,53 @@ import {TabsPage} from "../tabs/tabs";
 })
 export class HomePage {
 
-  email: string;
-  password: string;
+  user = {} as User;
 
-  constructor(public navCtrl: NavController,
-              //public firebase: Firebase,
+  constructor(private afAuth: AngularFireAuth,
+              public navCtrl: NavController,
               public loadingCtrl: LoadingController,
               public toastCtrl: ToastController) {
 
   }
 
-  login() {
-    //this.navCtrl.push(TabsPage);
+  async login(user: User) {
 
-    var that = this;
-
-    var loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    loader.present();
-
-
-    /*this.usersService.loginUserService(this.email, this.password).then(authData => {
-      //successful
-      loader.dismiss();
-      that.navCtrl.setRoot(TabsPage);
-
-    }, error => {
-      loader.dismiss();
-      // Unable to log in
-      let toast = this.toastCtrl.create({
-        message: error,
-        duration: 3000,
+    if (!user.email || !user.password) {
+      this.toastCtrl.create({
+        message: 'Please fill all Fields!',
+        duration: 4000,
         position: 'top'
+      }).present();
+    } else {
+
+      var loader = this.loadingCtrl.create({
+        content: "Please wait..."
       });
-      toast.present();
+      loader.present();
 
-      that.password = ""//empty the password field
+      try {
+        const result = await this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password).then(authData => {
+          //successful
+          loader.dismiss();
+          this.navCtrl.setRoot(TabsPage);
 
-    });*/
+        }, error => {
+          loader.dismiss();
+          // Unable to log in
+          let toast = this.toastCtrl.create({
+            message: error,
+            duration: 4000,
+            position: 'top'
+          });
+          toast.present();
+
+          this.user.password = ""//empty the password field
+        });
+      }
+      catch (e) {
+        console.log(e);
+      }
+    }
   }
 
   goRegister() {
