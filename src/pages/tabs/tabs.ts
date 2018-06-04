@@ -53,7 +53,7 @@ export class TabsPage {
         enableBackdropDismiss: false,
         buttons: [
           {
-            text: 'Resend the email verification',
+            text: 'Resend a verification email',
             role: 'Resend',
             handler: () => {
               this.sendEmailVerification();
